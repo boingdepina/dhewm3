@@ -31,14 +31,20 @@ jobs:
     - name: Install build dependencies
       run: |
         sudo apt update
-        sudo apt install -y libgl1-mesa-dev libsdl2-dev libopenal-dev libcurl4-openssl-dev cmake ninja-build
+        sudo apt install -y libgl1-mesa-dev libopenal-dev libcurl4-openssl-dev cmake ninja-build
+    - name: Setup SDL3
+      id: sdl
+      uses: libsdl-org/setup-sdl@main
+      with:
+        version: 3-latest
+        install-linux-dependencies: true  
     - name: Check out repository code
       uses: actions/checkout@v6
     - name: Build
       run: |
         mkdir build
         cd build
-        cmake -G Ninja -DDEDICATED=ON ../neo/
+        cmake -G Ninja -DSDL3=1 -DDEDICATED=ON ../neo/
         ninja
     - name: Create testbuild package
       run: |
